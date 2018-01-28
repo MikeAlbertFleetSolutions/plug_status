@@ -1,0 +1,286 @@
+    <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.18.1">
+    <title>PlugStatus – PlugStatus v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-c922dbe7ef.css" />
+    
+    <script src="dist/sidebar_items-dc983df22e.js"></script>
+    
+    
+    
+    
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode')) document.body.className += ' night-mode'; } catch (e) { }</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <span class="icon-menu" aria-hidden="true"></span>
+  <span class="sr-only">Toggle Sidebar</span>
+</button>
+<section class="sidebar">
+
+  
+  <a href="api-reference.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        PlugStatus
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <input name="q" type="text" id="search-list" class="search-input" placeholder="search" aria-label="Search" autocomplete="off" />
+  </form>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">PlugStatus v0.1.0</small>
+        PlugStatus
+        
+          <a href="https://github.com/MikeAlbertFleetSolutions/plug_status/blob/master/lib/plug_status.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>A plug for responding to status requests, returns performance metrics.</p>
+<p>This plug responds with a successful status to <code class="inline">GET</code> requests at a
+specific path so that clients can get status information.</p>
+<p>The response that this plug sends is a <em>200</em> response with a json body containing
+status information, the path that responds to this request is <code class="inline">/__status</code>,
+but it can be configured.</p>
+<p>Note that this plug <strong>halts the connection</strong>. This is done so that it can be
+plugged near the top of a plug pipeline and catch requests early so that
+subsequent plugs don’t have the chance to tamper with the connection.
+Read more about halting connections in the docs for <a href="http://hexdocs.pm/plug/Plug.Builder.html"><code class="inline">Plug.Builder</code></a>.</p>
+<h2 id="module-information-returned" class="section-heading">
+  <a href="#module-information-returned" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Information returned
+</h2>
+
+<p>The following information below is returned.</p>
+<ul>
+<li><code class="inline">memory</code> - all information from Erlang VM call <a href="http://erlang.org/doc/man/erlang.html#memory-0"><code class="inline">memory/0</code></a>
+</li>
+<li><code class="inline">statistics</code> - These items from Erlang VM call <a href="http://erlang.org/doc/man/erlang.html#statistics-1"><code class="inline">statistics/1</code></a>:
+:active_tasks,
+:context_switches,
+:garbage_collection,
+:io,
+:run_queue,
+:run_queue_lengths,
+:scheduler_wall_time,
+:total_active_tasks,
+:total_run_queue_lengths
+</li>
+<li><code class="inline">system_info</code> - These items from Erlang VM call <a href="http://erlang.org/doc/man/erlang.html#system_info-1"><code class="inline">system_info/1</code></a>:
+:atom_count,
+:atom_limit,
+:otp_release,
+:port_count,
+:port_limit,
+:process_count,
+:process_limit,
+:schedulers,
+:schedulers_online,
+:thread_pool_size,
+:version
+</li>
+</ul>
+<h2 id="module-options" class="section-heading">
+  <a href="#module-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+
+<p>The following options can be used when calling <code class="inline">plug PlugStatus</code>.</p>
+<ul>
+<li><code class="inline">:path</code> - a string specifying the path on which <a href="PlugStatus.html#content"><code class="inline">PlugStatus</code></a> will respond
+to status requests
+</li>
+</ul>
+<h2 id="module-examples" class="section-heading">
+  <a href="#module-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+
+<pre><code class="elixir">defmodule MyServer do
+  use Plug.Builder
+  plug PlugStatus
+
+  # ... rest of the pipeline
+end</code></pre>
+<p>Using a custom path:</p>
+<pre><code class="elixir">defmodule MyServer do
+  use Plug.Builder
+  plug PlugStatus, path: &quot;/status&quot;
+
+  # ... rest of the pipeline
+end</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#call/2">call(conn, opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/plug/1.4.4/Plug.html#c:call/2"><code class="inline">Plug.call/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#init/1">init(opts)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/plug/1.4.4/Plug.html#c:init/1"><code class="inline">Plug.init/1</code></a></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="call/2">
+  
+  
+  <div class="detail-header">
+    <a href="#call/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <span class="signature">call(conn, opts)</span>
+    
+      <a href="https://github.com/MikeAlbertFleetSolutions/plug_status/blob/master/lib/plug_status.ex#L80" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Callback implementation for <a href="https://hexdocs.pm/plug/1.4.4/Plug.html#c:call/2"><code class="inline">Plug.call/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="init/1">
+  
+  
+  <div class="detail-header">
+    <a href="#init/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <span class="signature">init(opts)</span>
+    
+      <a href="https://github.com/MikeAlbertFleetSolutions/plug_status/blob/master/lib/plug_status.ex#L77" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Callback implementation for <a href="https://hexdocs.pm/plug/1.4.4/Plug.html#c:init/1"><code class="inline">Plug.init/1</code></a>.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.18.1),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle"><span class="sr-only">Switch theme</span></button>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-778c9ef903.js"></script>
+  
+  
+  
+  
+  </body>
+</html>
+
