@@ -83,7 +83,6 @@ defmodule PlugStatus do
       |> halt
       |> send_status()
     else
-      IO.inspect(conn.method)
       conn
     end
   end
