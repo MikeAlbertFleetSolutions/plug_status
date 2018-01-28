@@ -8,7 +8,7 @@ Add a dependency to your application's `mix.exs` file:
 
 ```elixir
 defp deps do
-  [{:plug_status, "MikeAlbertFleetSolutions/plug_status"}]
+  [{:plug_status, github: "MikeAlbertFleetSolutions/plug_status"}]
 end
 ```
 
