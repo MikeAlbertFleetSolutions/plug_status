@@ -74,8 +74,7 @@ defmodule PlugStatus do
   @behaviour Plug
   import Plug.Conn
 
-  def init(opts),
-    do: Keyword.merge([path: @default_path], opts)
+  def init(opts), do: Keyword.merge([path: @default_path], opts)
 
   def call(%Plug.Conn{} = conn, opts) do
     if conn.request_path == opts[:path] and conn.method == "GET" do
@@ -90,15 +89,20 @@ defmodule PlugStatus do
   defp send_status(conn) do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, Poison.encode!(%{
-        "memory" => memory(),
-        "statistics" => statistics(),
-        "system_info" => system_info(),
-      }))
+    |> send_resp(
+      200,
+      Poison.encode!(%{
+        "erlangvm" => %{
+          "memory" => memory(),
+          "statistics" => statistics(),
+          "system_info" => system_info()
+        }
+      })
+    )
   end
 
   defp memory do
-    :erlang.memory
+    :erlang.memory()
     |> Enum.into(%{})
   end
 
@@ -115,29 +119,29 @@ defmodule PlugStatus do
       :total_run_queue_lengths
     ]
     |> Stream.map(fn x ->
-        stat({x, :erlang.statistics(x)})
-      end)
+      stat({x, :erlang.statistics(x)})
+    end)
     |> Enum.into(%{})
   end
 
   defp system_info do
-      [
-        :atom_count,
-        :atom_limit,
-        :otp_release,
-        :port_count,
-        :port_limit,
-        :process_count,
-        :process_limit,
-        :schedulers,
-        :schedulers_online,
-        :thread_pool_size,
-        :version
-      ]
-      |> Stream.map(fn x ->
-          sysinfo({x, :erlang.system_info(x)})
-        end)
-      |> Enum.into(%{})
+    [
+      :atom_count,
+      :atom_limit,
+      :otp_release,
+      :port_count,
+      :port_limit,
+      :process_count,
+      :process_limit,
+      :schedulers,
+      :schedulers_online,
+      :thread_pool_size,
+      :version
+    ]
+    |> Stream.map(fn x ->
+      sysinfo({x, :erlang.system_info(x)})
+    end)
+    |> Enum.into(%{})
   end
 
   # statistics formatting helpers
@@ -146,18 +150,20 @@ defmodule PlugStatus do
     {k, {contextswitches, 0}} = {k, v}
     {k, contextswitches}
   end
-  defp stat({k, v}) when k  == :garbage_collection do
+
+  defp stat({k, v}) when k == :garbage_collection do
     # {garbage_collection, {Number_of_GCs, Words_Reclaimed, 0}}
     {k, {number_of_gcs, words_reclaimed, 0}} = {k, v}
     {k, %{:number_of_gcs => number_of_gcs, :words_reclaimed => words_reclaimed}}
   end
+
   defp stat({k, v}) when k == :io do
     # {io: {{input, Input}, {output, Output}}}
     {k, {{_input, input}, {_output, output}}} = {k, v}
     {k, %{:input => input, :output => output}}
   end
-  defp stat({k, v}), do: {k, v}
 
+  defp stat({k, v}), do: {k, v}
 
   # system_info formatting helpers
   defp sysinfo({k, v}) when k in [:otp_release, :version], do: {k, String.Chars.to_string(v)}
